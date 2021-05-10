@@ -43,8 +43,10 @@ def createuser():
     user_dict = request.get_json(silent=True)
     if user_dict is None:
         abort(400, 'Not a JSON')
-    elif "name" not in user_dict.keys():
-        abort(400, "Missing name")
+    elif "email" not in user_dict.keys():
+        abort(400, "Missing email")
+    elif "password" not in user_dict.keys():
+        abort(400, "Missing password")
     else:
         new_u = User(**user_dict)
         storage.new(new_u)

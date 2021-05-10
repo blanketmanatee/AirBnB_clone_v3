@@ -3,7 +3,7 @@
 from api.v1.views import app_views
 from flask import request, jsonify, abort
 from models import storage
-from models.amenitites import Amenity
+from models.amenity import Amenity
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
@@ -39,7 +39,7 @@ def deleteamenity(amenity_id=None):
         return jsonify({}), 200
 
 
-@app_views.route('/amenities', methods=['CREATE'], strict_slashes=False)
+@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def createamenity():
     """ CREATE amenity """
     s = request.get_json(silent=True)
