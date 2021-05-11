@@ -4,14 +4,12 @@ from api.v1.views import app_views
 from flask import request, jsonify, abort
 from models import storage
 from models.city import City
-
+from models.state import State
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'],
                  strict_slashes=False)
 def allcities():
     """ GET all City objects of a State """
-    if state_id not in State:
-        abort(404)
     res = []
     for i in storage.all(City).values():
         res.append(i.to_dict())
@@ -21,7 +19,7 @@ def allcities():
 @app_views.route('cities/<city_id>', methods=['GET'], strict_slashes=False)
 def getcity(city_id):
     """ GET a city object """
-    if city_id not in City:
+    if city_id is None:
         abort(404)
     c = storage.get(City, city_id)
     if c is None:
@@ -61,7 +59,7 @@ def createcity():
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def updatestate(city_id):
+def updatecity(city_id):
     """ update city with PUT """
     obj = storage.get(City, city_id)
     if obj is None:
