@@ -58,10 +58,10 @@ def createcity(state_id):
     elif "name" not in c.keys():
         abort(400, "Missing name")
     else:
-        new_c = City(**c)
         c["state_id"] = state_id
         # ^ setting the state_id attr of the particular city equal to
         # the state_id of the state passed in
+        new_c = City(**c)
         storage.new(new_c)
         storage.save()
         return jsonify(new_c.to_dict()), 201
