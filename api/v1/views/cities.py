@@ -8,10 +8,14 @@ from models.state import State
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'],
                  strict_slashes=False)
-def allcities():
+def allcities(state_id):
     """ GET all City objects of a State """
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+    c_list = state.cities
     res = []
-    for i in storage.all(City).values():
+    for i in c_list:
         res.append(i.to_dict())
     return jsonify(res)
 
@@ -45,11 +49,12 @@ def deletecity(city_id=None):
 def createcity():
     """ CREATE a city """
     c = request.get_json(silent=True)
+    state = storage.get(State, state_id)
     if c is None:
         abort(400, "Not a Json")
-    if state_id not in State:
+    elif state is None:
         abort(404)
-    elif "name" not in s.keys():
+    elif "name" not in c.keys():
         abort(400, "Missing name")
     else:
         new_c = City(**c)
